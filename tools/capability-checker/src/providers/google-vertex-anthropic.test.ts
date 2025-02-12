@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { describe, it, expect } from 'vitest';
 import {
   createVertexAnthropic as createVertexAnthropicNode,
@@ -14,8 +13,9 @@ import fs from 'fs';
 import {
   createFeatureTestSuite,
   createLanguageModelWithCapabilities,
-  ModelWithCapabilities,
-} from './feature-test-suite';
+} from '../feature-test-suite';
+import { ModelConfig, ModelWithCapabilities } from '../types/model';
+import 'dotenv/config';
 
 const RUNTIME_VARIANTS = {
   edge: {
@@ -30,12 +30,19 @@ const RUNTIME_VARIANTS = {
   },
 } as const;
 
-const createModelObject = (
-  model: LanguageModelV1,
-): { model: LanguageModelV1; modelId: string } => ({
-  model: model,
-  modelId: model.modelId,
-});
+const createBaseModel = (
+  createVertexAnthropic:
+    | typeof createVertexAnthropicNode
+    | typeof createVertexAnthropicEdge,
+  modelId: string,
+): ModelWithCapabilities<LanguageModelV1> => {
+  const model = createVertexAnthropic({
+    project: process.env.GOOGLE_VERTEX_PROJECT!,
+    location: process.env.GOOGLE_VERTEX_LOCATION ?? 'us-east5',
+  })(modelId);
+
+  return createLanguageModelWithCapabilities(model);
+};
 
 const createLanguageModel = (
   createVertexAnthropic:
@@ -51,7 +58,7 @@ const createLanguageModel = (
   })(modelId);
 
   if (additionalTests.length > 0) {
-    describe.each([createModelObject(model)])(
+    describe.each([createBaseModel(createVertexAnthropic, modelId)])(
       'Provider-specific tests: $modelId',
       ({ model }) => {
         additionalTests.forEach(test => test(model));
@@ -68,49 +75,39 @@ const createModelVariants = (
     | typeof createVertexAnthropicEdge,
   modelId: string,
 ): ModelWithCapabilities<LanguageModelV1>[] => [
+  createBaseModel(createVertexAnthropic, modelId),
   createLanguageModel(createVertexAnthropic, modelId, [toolTests]),
 ];
-
-// Model variants to test against
-const CHAT_MODELS = [
-  'claude-3-5-sonnet-v2@20241022',
-  // 'claude-3-5-haiku@20241022',
-  // 'claude-3-5-sonnet@20240620',
-  // Models must be individually enabled through the Cloud Console. The above are the latest and most likely to be used.
-  // 'claude-3-haiku@20240307',
-  // 'claude-3-sonnet@20240229',
-  // 'claude-3-opus@20240229',
-];
-
-const createModelsForRuntime = (
-  createVertexAnthropic:
-    | typeof createVertexAnthropicNode
-    | typeof createVertexAnthropicEdge,
-) => ({
-  languageModels: CHAT_MODELS.flatMap(modelId =>
-    createModelVariants(createVertexAnthropic, modelId),
-  ),
-});
 
 const LONG_TEST_MILLIS = 20000;
 const COMPUTER_USE_TEST_MILLIS = 45000;
 
-describe.each(Object.values(RUNTIME_VARIANTS))(
-  'Vertex Anthropic E2E Tests - $name',
-  ({ createVertexAnthropic }) => {
-    createFeatureTestSuite({
-      name: `Vertex Anthropic (${createVertexAnthropic.name})`,
-      models: createModelsForRuntime(createVertexAnthropic),
-      timeout: LONG_TEST_MILLIS,
-      customAssertions: {
-        skipUsage: false,
-        errorValidator: (error: APICallError) => {
-          expect(error.message).toMatch(/Model .* not found/);
-        },
-      },
-    })();
-  },
-);
+export default function runTests(modelConfig: ModelConfig) {
+  describe.each(Object.values(RUNTIME_VARIANTS))(
+    'Vertex Anthropic E2E Tests - $name',
+    ({ createVertexAnthropic }) => {
+      switch (modelConfig.modelType) {
+        case 'language':
+          createFeatureTestSuite({
+            name: `Vertex Anthropic (${createVertexAnthropic.name})`,
+            models: {
+              language: createModelVariants(
+                createVertexAnthropic,
+                modelConfig.modelId,
+              ),
+            },
+            timeout: LONG_TEST_MILLIS,
+            errorValidators: {
+              language: (error: APICallError) => {
+                expect(error.message).toMatch(/Model .* not found/);
+              },
+            },
+          })();
+          break;
+      }
+    },
+  );
+}
 
 const toolTests = (model: LanguageModelV1) => {
   it.skipIf(!['claude-3-5-sonnet-v2@20241022'].includes(model.modelId))(
@@ -155,7 +152,6 @@ const toolTests = (model: LanguageModelV1) => {
         maxSteps: 5,
       });
 
-      console.log(result.text);
       expect(result.text).toBeTruthy();
       expect(result.text.toLowerCase()).toMatch(/color theme|dark mode/);
       expect(result.usage?.totalTokens).toBeGreaterThan(0);

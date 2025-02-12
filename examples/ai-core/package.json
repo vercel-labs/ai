@@ -40,8 +40,6 @@
     "valibot": "^1.0.0-rc.0 || ^1.0.0"
   },
   "scripts": {
-    "test:e2e:all": "vitest run src/e2e/*.test.ts",
-    "test:file": "vitest run",
     "type-check": "tsc --noEmit"
   },
   "devDependencies": {

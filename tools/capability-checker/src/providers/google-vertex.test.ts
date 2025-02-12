@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { describe, expect, it, vi } from 'vitest';
 import { vertex as vertexEdge } from '@ai-sdk/google-vertex/edge';
 import { vertex as vertexNode } from '@ai-sdk/google-vertex';
@@ -13,9 +12,10 @@ import {
   createImageModelWithCapabilities,
   createLanguageModelWithCapabilities,
   defaultChatModelCapabilities,
-  ModelWithCapabilities,
-} from './feature-test-suite';
+} from '../feature-test-suite';
 import { ImageModelV1 } from '@ai-sdk/provider';
+import { ModelConfig, ModelWithCapabilities } from '../types/model';
+import 'dotenv/config';
 
 const RUNTIME_VARIANTS = {
   edge: {
@@ -80,47 +80,57 @@ const createModelVariants = (
   createSearchGroundedModel(vertex, modelId),
 ];
 
-const createModelsForRuntime = (
-  vertex: typeof vertexNode | typeof vertexEdge,
-) => ({
-  invalidModel: vertex('no-such-model'),
-  languageModels: [
-    ...createModelVariants(vertex, 'gemini-2.0-flash-exp'),
-    ...createModelVariants(vertex, 'gemini-1.5-flash'),
-    // Gemini 2.0 and Pro models have low quota limits and may require billing enabled.
-    // ...createModelVariants(vertex, 'gemini-1.5-pro-001'),
-    // ...createModelVariants(vertex, 'gemini-1.0-pro-001'),
-  ],
-  embeddingModels: [
-    createEmbeddingModelWithCapabilities(
-      vertex.textEmbeddingModel('textembedding-gecko'),
-    ),
-    createEmbeddingModelWithCapabilities(
-      vertex.textEmbeddingModel('textembedding-gecko-multilingual'),
-    ),
-  ],
-  imageModels: [
-    createImageModel(vertex, 'imagen-3.0-fast-generate-001', [imageTest]),
-    createImageModel(vertex, 'imagen-3.0-generate-001', [imageTest]),
-  ],
-});
+export default function runTests(modelConfig: ModelConfig) {
+  describe.each(Object.values(RUNTIME_VARIANTS))(
+    'Google Vertex AI - $name',
+    ({ vertex }) => {
+      const commonConfig = {
+        name: `Google Vertex AI (${vertex.name})`,
+        timeout: 20000,
+      };
 
-describe.each(Object.values(RUNTIME_VARIANTS))(
-  'Google Vertex AI - $name',
-  ({ vertex }) => {
-    createFeatureTestSuite({
-      name: `Google Vertex AI (${vertex.name})`,
-      models: createModelsForRuntime(vertex),
-      timeout: 20000,
-      customAssertions: {
-        skipUsage: false,
-        errorValidator: (error: APICallError) => {
-          expect(error.message).toMatch(/Model .* not found/);
-        },
-      },
-    })();
-  },
-);
+      switch (modelConfig.modelType) {
+        case 'language':
+          createFeatureTestSuite({
+            ...commonConfig,
+            models: {
+              language: [...createModelVariants(vertex, modelConfig.modelId)],
+            },
+            errorValidators: {
+              language: (error: APICallError) => {
+                expect(error.message).toMatch(/Model .* not found/);
+              },
+            },
+          })();
+          break;
+
+        case 'embedding':
+          createFeatureTestSuite({
+            ...commonConfig,
+            models: {
+              embedding: [
+                createEmbeddingModelWithCapabilities(
+                  vertex.textEmbeddingModel(modelConfig.modelId),
+                ),
+              ],
+            },
+          })();
+          break;
+
+        case 'image':
+          createFeatureTestSuite({
+            ...commonConfig,
+            models: {
+              image: [
+                createImageModel(vertex, modelConfig.modelId, [imageTest]),
+              ],
+            },
+          })();
+          break;
+      }
+    },
+  );
+}
 
 const mimeTypeSignatures = [
   { mimeType: 'image/gif' as const, bytes: [0x47, 0x49, 0x46] },

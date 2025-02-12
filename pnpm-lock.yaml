@@ -1207,7 +1207,7 @@ importers:
         version: link:../../tools/tsconfig
       aws-sdk-client-mock:
         specifier: ^4.0.2
-        version: 4.0.2
+        version: 4.1.0
       tsup:
         specifier: ^8.3.0
         version: 8.3.0(jiti@2.4.0)(postcss@8.4.49)(tsx@4.19.2)(typescript@5.6.3)(yaml@2.5.0)
@@ -2134,6 +2134,73 @@ importers:
       typescript:
         specifier: 5.6.3
         version: 5.6.3
+
+  tools/capability-checker:
+    dependencies:
+      '@ai-sdk/cerebras':
+        specifier: 0.1.8
+        version: link:../../packages/cerebras
+      '@ai-sdk/deepinfra':
+        specifier: 0.1.9
+        version: link:../../packages/deepinfra
+      '@ai-sdk/deepseek':
+        specifier: 0.1.8
+        version: link:../../packages/deepseek
+      '@ai-sdk/fireworks':
+        specifier: 0.1.8
+        version: link:../../packages/fireworks
+      '@ai-sdk/google':
+        specifier: 1.1.11
+        version: link:../../packages/google
+      '@ai-sdk/google-vertex':
+        specifier: 2.1.12
+        version: link:../../packages/google-vertex
+      '@ai-sdk/luma':
+        specifier: 0.0.4
+        version: link:../../packages/luma
+      '@ai-sdk/openai':
+        specifier: 1.1.9
+        version: link:../../packages/openai
+      '@ai-sdk/perplexity':
+        specifier: 0.0.7
+        version: link:../../packages/perplexity
+      '@ai-sdk/provider':
+        specifier: 1.0.7
+        version: link:../../packages/provider
+      '@ai-sdk/provider-utils':
+        specifier: 2.1.6
+        version: link:../../packages/provider-utils
+      '@ai-sdk/togetherai':
+        specifier: 0.1.9
+        version: link:../../packages/togetherai
+      '@ai-sdk/xai':
+        specifier: 1.1.8
+        version: link:../../packages/xai
+      ai:
+        specifier: 4.1.34
+        version: link:../../packages/ai
+      dotenv:
+        specifier: 16.4.5
+        version: 16.4.5
+      vitest:
+        specifier: 2.1.4
+        version: 2.1.4(@edge-runtime/vm@5.0.0)(@types/node@18.19.54)(jsdom@24.0.0)(msw@2.7.0(@types/node@18.19.54)(typescript@5.6.3))(terser@5.31.3)
+    devDependencies:
+      '@types/node':
+        specifier: ^18
+        version: 18.19.54
+      '@vercel/ai-tsconfig':
+        specifier: workspace:*
+        version: link:../tsconfig
+      tsup:
+        specifier: ^8
+        version: 8.3.0(jiti@2.4.0)(postcss@8.4.49)(tsx@4.19.2)(typescript@5.6.3)(yaml@2.5.0)
+      typescript:
+        specifier: 5.6.3
+        version: 5.6.3
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
 
   tools/eslint-config:
     dependencies:
@@ -6638,8 +6705,8 @@ packages:
   '@sinonjs/fake-timers@11.2.2':
     resolution: {integrity: sha512-G2piCSxQ7oWOxwGSAyFHfPIsyeJGXYtc6mFbnFA+kRXkiEnTl8c/8jul2S329iFBnDI9HGoeWWAZvuvOkZccgw==}
 
-  '@sinonjs/fake-timers@13.0.2':
-    resolution: {integrity: sha512-4Bb+oqXZTSTZ1q27Izly9lv8B9dlV61CROxPiVtywwzv5SnytJqhvYe6FclHYuXml4cd1VHPo1zd5PmTeJozvA==}
+  '@sinonjs/fake-timers@13.0.5':
+    resolution: {integrity: sha512-36/hTbH2uaWuGVERyC6da9YwGWnzUZXuPro/F2LfsdOsLnCojz/iSH8MxUt/FD2S5XBSVPhmArFUXcpCQ2Hkiw==}
 
   '@sinonjs/samsam@8.0.2':
     resolution: {integrity: sha512-v46t/fwnhejRSFTGqbpn9u+LQ9xJDse10gNnPgAcxgdoCDMXj/G2asWAC/8Qs+BAZDicX+MNZouXT1A7c83kVw==}
@@ -7952,8 +8019,8 @@ packages:
   avvio@9.0.0:
     resolution: {integrity: sha512-UbYrOXgE/I+knFG+3kJr9AgC7uNo8DG+FGGODpH9Bj1O1kL/QDjBXnTem9leD3VdQKtaHjV3O85DQ7hHh4IIHw==}
 
-  aws-sdk-client-mock@4.0.2:
-    resolution: {integrity: sha512-saFLXQPqHuMH0A1peNIGoAFEq9B0bpS5y5qrr+Y5F86MasVkCctggHKhHPRVjGr852Nz7cLg/PBxKs6lQoK3mg==}
+  aws-sdk-client-mock@4.1.0:
+    resolution: {integrity: sha512-h/tOYTkXEsAcV3//6C1/7U4ifSpKyJvb6auveAepqqNJl6TdZaPFEtKjBQNf8UxQdDP850knB2i/whq4zlsxJw==}
 
   axe-core@4.10.0:
     resolution: {integrity: sha512-Mr2ZakwQ7XUAjp7pAwQWRhhK8mQQ6JAaNWSjmjxil0R8BPioMtQsTLOolGYkji1rcL++3dCqZA3zWqpT+9Ew6g==}
@@ -14723,7 +14790,7 @@ snapshots:
       '@smithy/util-retry': 3.0.7
       '@smithy/util-stream': 3.1.9
       '@smithy/util-utf8': 3.0.0
-      tslib: 2.7.0
+      tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
 
@@ -19763,7 +19830,7 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@sinonjs/fake-timers@13.0.2':
+  '@sinonjs/fake-timers@13.0.5':
     dependencies:
       '@sinonjs/commons': 3.0.1
 
@@ -19972,7 +20039,7 @@ snapshots:
 
   '@smithy/types@3.5.0':
     dependencies:
-      tslib: 2.6.2
+      tslib: 2.8.1
 
   '@smithy/url-parser@3.0.7':
     dependencies:
@@ -20915,6 +20982,15 @@ snapshots:
       msw: 2.6.4(@types/node@18.19.54)(typescript@5.6.3)
       vite: 5.4.11(@types/node@18.19.54)(terser@5.31.3)
 
+  '@vitest/mocker@2.1.4(msw@2.7.0(@types/node@18.19.54)(typescript@5.6.3))(vite@5.4.11(@types/node@18.19.54)(terser@5.31.3))':
+    dependencies:
+      '@vitest/spy': 2.1.4
+      estree-walker: 3.0.3
+      magic-string: 0.30.12
+    optionalDependencies:
+      msw: 2.7.0(@types/node@18.19.54)(typescript@5.6.3)
+      vite: 5.4.11(@types/node@18.19.54)(terser@5.31.3)
+
   '@vitest/mocker@2.1.4(msw@2.7.0(@types/node@22.7.4)(typescript@5.6.3))(vite@5.4.11(@types/node@22.7.4)(terser@5.31.3))':
     dependencies:
       '@vitest/spy': 2.1.4
@@ -21607,11 +21683,11 @@ snapshots:
       '@fastify/error': 4.0.0
       fastq: 1.17.1
 
-  aws-sdk-client-mock@4.0.2:
+  aws-sdk-client-mock@4.1.0:
     dependencies:
       '@types/sinon': 17.0.3
       sinon: 18.0.1
-      tslib: 2.6.2
+      tslib: 2.8.1
 
   axe-core@4.10.0: {}
 
@@ -26094,6 +26170,32 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
+  msw@2.7.0(@types/node@18.19.54)(typescript@5.6.3):
+    dependencies:
+      '@bundled-es-modules/cookie': 2.0.1
+      '@bundled-es-modules/statuses': 1.0.1
+      '@bundled-es-modules/tough-cookie': 0.1.6
+      '@inquirer/confirm': 5.0.2(@types/node@18.19.54)
+      '@mswjs/interceptors': 0.37.5
+      '@open-draft/deferred-promise': 2.2.0
+      '@open-draft/until': 2.1.0
+      '@types/cookie': 0.6.0
+      '@types/statuses': 2.0.5
+      graphql: 16.9.0
+      headers-polyfill: 4.0.3
+      is-node-process: 1.2.0
+      outvariant: 1.4.3
+      path-to-regexp: 6.3.0
+      picocolors: 1.1.1
+      strict-event-emitter: 0.5.1
+      type-fest: 4.26.1
+      yargs: 17.7.2
+    optionalDependencies:
+      typescript: 5.6.3
+    transitivePeerDependencies:
+      - '@types/node'
+    optional: true
+
   msw@2.7.0(@types/node@22.7.4)(typescript@5.6.3):
     dependencies:
       '@bundled-es-modules/cookie': 2.0.1
@@ -26272,7 +26374,7 @@ snapshots:
   nise@6.1.1:
     dependencies:
       '@sinonjs/commons': 3.0.1
-      '@sinonjs/fake-timers': 13.0.2
+      '@sinonjs/fake-timers': 13.0.5
       '@sinonjs/text-encoding': 0.7.3
       just-extend: 6.2.0
       path-to-regexp: 8.2.0
@@ -29865,6 +29967,43 @@ snapshots:
     dependencies:
       '@vitest/expect': 2.1.4
       '@vitest/mocker': 2.1.4(msw@2.6.4(@types/node@18.19.54)(typescript@5.6.3))(vite@5.4.11(@types/node@18.19.54)(terser@5.31.3))
+      '@vitest/pretty-format': 2.1.4
+      '@vitest/runner': 2.1.4
+      '@vitest/snapshot': 2.1.4
+      '@vitest/spy': 2.1.4
+      '@vitest/utils': 2.1.4
+      chai: 5.1.2
+      debug: 4.3.7(supports-color@9.4.0)
+      expect-type: 1.1.0
+      magic-string: 0.30.12
+      pathe: 1.1.2
+      std-env: 3.7.0
+      tinybench: 2.9.0
+      tinyexec: 0.3.1
+      tinypool: 1.0.1
+      tinyrainbow: 1.2.0
+      vite: 5.4.11(@types/node@18.19.54)(terser@5.31.3)
+      vite-node: 2.1.4(@types/node@18.19.54)(terser@5.31.3)
+      why-is-node-running: 2.3.0
+    optionalDependencies:
+      '@edge-runtime/vm': 5.0.0
+      '@types/node': 18.19.54
+      jsdom: 24.0.0
+    transitivePeerDependencies:
+      - less
+      - lightningcss
+      - msw
+      - sass
+      - sass-embedded
+      - stylus
+      - sugarss
+      - supports-color
+      - terser
+
+  vitest@2.1.4(@edge-runtime/vm@5.0.0)(@types/node@18.19.54)(jsdom@24.0.0)(msw@2.7.0(@types/node@18.19.54)(typescript@5.6.3))(terser@5.31.3):
+    dependencies:
+      '@vitest/expect': 2.1.4
+      '@vitest/mocker': 2.1.4(msw@2.7.0(@types/node@18.19.54)(typescript@5.6.3))(vite@5.4.11(@types/node@18.19.54)(terser@5.31.3))
       '@vitest/pretty-format': 2.1.4
       '@vitest/runner': 2.1.4
       '@vitest/snapshot': 2.1.4
